@@ -108,6 +108,12 @@ def writexmp(imgfname, outDir, rects, names):
         cmd = 'exiv2 -M \"set Xmp.mwg-rs.Regions/mwg-rs:RegionList[%d]/mwg-rs:Name \"%s" \" %s' % (idx+1, names[idx], xmpfname)
         os.system(cmd)
         cmd = 'exiv2  -M \"set Xmp.mwg-rs.Regions/mwg-rs:RegionList[%d]/mwg-rs:Type Face \" %s' % (idx+1, xmpfname)
+        os.system(cmd)
+        cmd = 'exiv2 -M \"set Xmp.mwg-rs.Regions/mwg-rs:AppliedToDimensions/stDim:w 1600 \" %s' % ( xmpfname)
+        os.system(cmd.encode('utf-8'))
+        cmd = 'exiv2 -M \"set Xmp.mwg-rs.Regions/mwg-rs:AppliedToDimensions/stDim:h 1200 \" %s' % ( xmpfname)
+        os.system(cmd.encode('utf-8'))
+        cmd = 'exiv2 -M \"set Xmp.mwg-rs.Regions/mwg-rs:AppliedToDimensions/stDim:unit pixel \" %s' % ( xmpfname)
         os.system(cmd.encode('utf-8'))
         cmd = 'exiv2 -M \"set Xmp.mwg-rs.Regions/mwg-rs:RegionList[%d]/mwg-rs:Area/stArea:x %f \" %s' % (idx+1, rects[idx][0], xmpfname)
         os.system(cmd.encode('utf-8'))
@@ -196,10 +202,11 @@ def main():
 
     # make sure the Picasa3 db files exist
     try:
-        contactFile = locate("contacts.xml", args.path).next()
-    except:
-        print "error: contacts.xml  was " \
-           "not found in any subdirectory under %s"%args.path
+        contactFile = args.path 
+    except Exception as e:
+        print(e)
+        print("error: contacts.xml  was " \
+           "not found in any subdirectory under %s"%args.path)
         return 2
 
     if args.path == "":
