@@ -44,11 +44,11 @@ def testSys():
     cmd_exists = lambda x: any(os.access(os.path.join(path, x), os.X_OK) for path in os.environ["PATH"].split(os.pathsep))
 
     if not cmd_exists('exiv2'):
-        print "Need exiv2 command line tool"
+        print("Need exiv2 command line tool")
         sys.exit(5)
         
     if not cmd_exists('exiftool'):
-        print "Need exiftool command line tool"
+        print("Need exiftool command line tool")
         sys.exit(5)
 
 
@@ -202,26 +202,26 @@ def main():
         return 2
 
     if args.path == "":
-        print "no Picasa3 directory found in %s" % os.environ['HOME']
-        print "please specify using --path"
+        print( "no Picasa3 directory found in %s" % os.environ['HOME'])
+        print( "please specify using --path")
     else:
         source = os.path.abspath(args.source)
         dest = os.path.abspath(os.path.join(args.dest, os.path.basename(source)
                                             + ".meta"))
 
         if re.match(source, args.dest):
-            print "Destination (%s) is a subdirectory of source (%s)." \
+            print( "Destination (%s) is a subdirectory of source (%s)." \
              "  To avoid recursion I require these to be different." \
              "  Please change your working directory or specify a " \
-             "destination with --dest"%(args.dest,source)
+             "destination with --dest"%(args.dest,source))
             return 2
 
         if os.path.exists(dest) :
-            print "Destination (%s) already exists. "\
+            print( "Destination (%s) already exists. "\
              "In order to be absolutely sure I do not overwrite " \
              "anything I require that the destination directory does not " \
              "previously exist. Please delete it or specify a different " \
-             "destination with --dest"%dest
+             "destination with --dest"%dest)
             #return 2
 
 
@@ -236,11 +236,12 @@ def main():
             curdestdir = curdestdir.replace(source,dest)
 
             try:
-                os.makedirs(curdestdir, 0750)
+                os.makedirs(curdestdir, 0o750)
             except:
                 pass
             
-            for imageFile, iniEntrys in myIni.contents.iteritems():
+            #for imageFile, iniEntrys in myIni.contents.iteritems():
+            for imageFile, iniEntrys in myIni.contents.items():
                 if imageFile == 'Contacts' or imageFile == 'Contacts2':
                     continue
                 if not os.path.exists(os.path.join(myIni.filePath, imageFile)):
