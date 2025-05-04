@@ -32,8 +32,9 @@ import fnmatch
 import shutil
 
 # This is really lazy. Path to your picasa3meta
-sys.path.append(os.path.join(os.getenv("HOME"), 'src', 'picasa3meta' ))
-from picasa3meta import thumbindex, pmpinfo, iniinfo, exiv2meta, contacts
+sys.path.append(os.path.join(os.getenv("HOME"), 'dev', 'picasa3meta' ))
+#from picasa3meta import thumbindex, pmpinfo, iniinfo, exiv2meta, contacts
+from picasa3meta import contacts, iniinfo
 
 
 
@@ -101,11 +102,11 @@ def writexmp(imgfname, outDir, rects, names):
         
     # now start adding the regions
     cmd = 'exiv2 -M "set Xmp.mwg-rs.Regions/mwg-rs:RegionList ''" %s' % xmpfname
-    os.system(cmd.encode('utf-8'))
+    os.system(cmd)
 
     for idx, item in enumerate(names):
         cmd = 'exiv2 -M \"set Xmp.mwg-rs.Regions/mwg-rs:RegionList[%d]/mwg-rs:Name \"%s" \" %s' % (idx+1, names[idx], xmpfname)
-        os.system(cmd.encode('utf-8'))
+        os.system(cmd)
         cmd = 'exiv2  -M \"set Xmp.mwg-rs.Regions/mwg-rs:RegionList[%d]/mwg-rs:Type Face \" %s' % (idx+1, xmpfname)
         os.system(cmd.encode('utf-8'))
         cmd = 'exiv2 -M \"set Xmp.mwg-rs.Regions/mwg-rs:RegionList[%d]/mwg-rs:Area/stArea:x %f \" %s' % (idx+1, rects[idx][0], xmpfname)
