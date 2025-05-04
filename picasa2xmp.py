@@ -100,6 +100,8 @@ def writexmp(imgfname, outDir, rects, names):
         # there was a xmp file at with the image, so we use it
         shutil.copyfile(imgfname + '.xmp', xmpfname)
         
+    imgwidth = os.popen("exiftool -s3 -ImageWidth {}".format(imgfname)).read().rstrip()
+    imgheight = os.popen("exiftool -s3 -ImageHeight {}".format(imgfname)).read().rstrip()
     # now start adding the regions
     cmd = 'exiv2 -M "set Xmp.mwg-rs.Regions/mwg-rs:RegionList ''" %s' % xmpfname
     os.system(cmd)
@@ -109,9 +111,10 @@ def writexmp(imgfname, outDir, rects, names):
         os.system(cmd)
         cmd = 'exiv2  -M \"set Xmp.mwg-rs.Regions/mwg-rs:RegionList[%d]/mwg-rs:Type Face \" %s' % (idx+1, xmpfname)
         os.system(cmd)
-        cmd = 'exiv2 -M \"set Xmp.mwg-rs.Regions/mwg-rs:AppliedToDimensions/stDim:w 1600 \" %s' % ( xmpfname)
+        cmd = 'exiv2 -M \"set Xmp.mwg-rs.Regions/mwg-rs:AppliedToDimensions/stDim:w %s \" %s' % (imgwidth, xmpfname)
+        print(cmd)
         os.system(cmd.encode('utf-8'))
-        cmd = 'exiv2 -M \"set Xmp.mwg-rs.Regions/mwg-rs:AppliedToDimensions/stDim:h 1200 \" %s' % ( xmpfname)
+        cmd = 'exiv2 -M \"set Xmp.mwg-rs.Regions/mwg-rs:AppliedToDimensions/stDim:h %s \" %s' % (imgheight, xmpfname)
         os.system(cmd.encode('utf-8'))
         cmd = 'exiv2 -M \"set Xmp.mwg-rs.Regions/mwg-rs:AppliedToDimensions/stDim:unit pixel \" %s' % ( xmpfname)
         os.system(cmd.encode('utf-8'))
